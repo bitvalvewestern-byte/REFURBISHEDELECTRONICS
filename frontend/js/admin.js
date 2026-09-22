@@ -22,7 +22,9 @@ async function adminFetch(path, options = {}) {
   let payload = null;
   if (text) { try { payload = JSON.parse(text); } catch { payload = null; } }
   if (!res.ok) {
-    const err = new Error(payload?.error?.message || `Request failed (${res.status}).`);
+    const err = new Error(payload?.error?.message
+      || (payload ? `Request failed (${res.status}).`
+                  : `The storefront service is unavailable (HTTP ${res.status}).`));
     err.code = payload?.error?.code || 'REQUEST_FAILED';
     err.status = res.status;
     throw err;

@@ -32,7 +32,12 @@ export async function apiFetch(path, options = {}) {
   if (text) { try { payload = JSON.parse(text); } catch { payload = null; } }
 
   if (!res.ok) {
-    const message = payload?.error?.message || `Request failed (${res.status}).`;
+    // Our API always answers with a JSON error envelope. If a failing response
+    // has no JSON at all, something else answered - typically a static host
+    // with the backend not connected (see HOSTING.md).
+    const message = payload?.error?.message
+      || (payload ? `Request failed (${res.status}).`
+                  : `The storefront service is unavailable (HTTP ${res.status}).`);
     const err = new Error(message);
     err.code = payload?.error?.code || 'REQUEST_FAILED';
     err.status = res.status;
