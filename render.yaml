@@ -1,0 +1,47 @@
+# Render blueprint for the Nairobi Computer Shop storefront backend.
+# Deploy with: https://render.com/deploy?repo=https://github.com/bitvalvewestern-byte/REFURBISHEDELECTRONICS
+#
+# The backend serves the full storefront (frontend/ + /api/*) from one process,
+# so this single service is a complete deployment. See HOSTING.md for the
+# Vercel-frontend + Render-backend split option.
+#
+# NOTE: the free plan's filesystem is EPHEMERAL - SQLite data (orders, admin
+# sessions) is wiped on every redeploy/restart. Fine for a demo; for real
+# orders add a persistent disk and set DB_FILE=/var/data/storefront.sqlite
+# (paid plan), or use a managed database.
+services:
+  - type: web
+    name: ncs-storefront
+    runtime: node
+    plan: free
+    region: frankfurt
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && node scripts/start.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: NODE_ENV
+        value: production
+      - key: TRUST_PROXY
+        value: "true"
+      - key: COOKIE_SECURE
+        value: "true"
+      - key: SOURCE_DRIVER
+        value: mock
+      - key: SELLING_PRICE_FACTOR
+        value: "0.50"
+      - key: SYNC_ON_BOOT
+        value: "true"
+      # Browser origin that may call the API. If the frontend stays on Vercel,
+      # this must be the Vercel domain. If you use the Render URL directly as
+      # the storefront, leave it empty (same-origin only).
+      - key: CORS_ORIGINS
+        value: https://refurbishedelectronics.vercel.app
+      # Set these in the Render dashboard (secrets, not committed):
+      #   PUBLIC_BASE_URL  -> https://<your-service>.onrender.com
+      #   ADMIN_PASSWORD   -> your admin password (hashed at boot by start.js)
+      - key: PUBLIC_BASE_URL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false

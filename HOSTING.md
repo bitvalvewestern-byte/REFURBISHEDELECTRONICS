@@ -83,3 +83,64 @@ node server.js                               # storefront on :8080
 ```
 
 Then open <http://localhost:8080/>.
+---
+
+## One-click backend hosting: Render
+
+`render.yaml` at the repo root is a Render blueprint for the backend. It runs
+`backend/scripts/start.js`, which hashes `ADMIN_PASSWORD` at boot (or uses
+`ADMIN_PASSWORD_HASH` if set), strips the plain password from the server
+process environment, and then starts `server.js`. The backend serves the whole
+storefront (frontend + API) on one origin, so the Render URL alone is a
+complete working site.
+
+Deploy: <https://render.com/deploy?repo=https://github.com/bitvalvewestern-byte/REFURBISHEDELECTRONICS>
+
+After the service is created, set two secrets in the Render dashboard:
+
+| Secret | Value |
+| --- | --- |
+| `PUBLIC_BASE_URL` | `https://<your-service>.onrender.com` |
+| `ADMIN_PASSWORD` | a strong password (min 10 chars; hashed at boot) |
+
+Blueprint defaults: Node 24, `NODE_ENV=production`, `TRUST_PROXY=true`,
+`COOKIE_SECURE=true`, `SOURCE_DRIVER=mock`, `SELLING_PRICE_FACTOR=0.50`,
+`SYNC_ON_BOOT=true`, `CORS_ORIGINS=https://refurbishedelectronics.vercel.app`.
+
+### Ephemeral storage on the free plan
+
+Render's free plan gives the service an **ephemeral filesystem**: the SQLite
+database (`backend/data/storefront.sqlite`) is wiped on every restart or
+redeploy. Orders and admin sessions will not survive. That is acceptable for a
+demo. For real orders:
+
+- paid plan: add a **persistent disk** (e.g. mounted at `/var/data`) and set
+  `DB_FILE=/var/data/storefront.sqlite`, or
+- use a managed database (Postgres/MySQL) - the schema is portable.
+
+### Wiring the Vercel frontend to the Render backend
+
+Keep the browser on one origin (the admin cookie is `SameSite=Strict` and is
+never sent cross-site). Add a rewrite to `vercel.json`:
+
+```json
+"rewrites": [
+  { "source": "/api/(.*)", "destination": "https://<your-service>.onrender.com/api/$1" }
+]
+```
+
+and make sure the backend has `CORS_ORIGINS=https://refurbishedelectronics.vercel.app`
+and `TRUST_PROXY=true` (both already in `render.yaml`). `TRUST_PROXY=true` is
+required behind the Vercel proxy so rate limiting keys on the real client IP
+instead of one shared bucket.
+
+### Testing `start.js` locally
+
+```bash
+cd backend
+DB_FILE=/tmp/start-test.sqlite PORT=8091 ADMIN_PASSWORD='TestPassword123' node scripts/start.js
+# then: curl http://127.0.0.1:8091/api/health
+```
+
+`dotenv` never overrides real environment variables, so the CLI values win over
+`backend/.env`.

@@ -60,7 +60,53 @@ cd backend && npm run hash-password -- "YourStrongPassword"   # -> ADMIN_PASSWOR
 
 ---
 
-## 2. Requirement coverage
+## 2. Put the site online
+
+Two pieces are deployed separately: the **frontend** (static, on Vercel) and the
+**backend** (Node/Express + SQLite, on a persistent Node host). Vercel cannot run
+the backend, so `/api/*` on the Vercel domain returns `404` until the backend is
+hosted and (optionally) proxied.
+
+### Option A - one-click: Render (recommended for this demo)
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/bitvalvewestern-byte/REFURBISHEDELECTRONICS)
+
+1. Click the button (or create a new **Web Service** from this repo and use
+   `render.yaml` as the blueprint).
+2. In the Render dashboard set the two secrets:
+   - `PUBLIC_BASE_URL` = `https://<your-service>.onrender.com`
+   - `ADMIN_PASSWORD` = a strong password (hashed at boot by
+     `backend/scripts/start.js`; the plain value never reaches the server
+     process).
+3. The service starts with `node scripts/start.js`, health-checks on
+   `/api/health`, and serves the whole storefront (frontend + API) on one
+   origin: `https://<your-service>.onrender.com/`.
+
+> **Free-plan caveat:** Render's free tier filesystem is **ephemeral** - SQLite
+> data (orders, admin sessions) is wiped on every restart/redeploy. That is fine
+> for a demo. For real orders, add a persistent disk (paid plan) and set
+> `DB_FILE=/var/data/storefront.sqlite`, or use a managed database.
+
+### Option B - keep the frontend on Vercel, proxy the API
+
+1. Deploy the backend as in Option A.
+2. Add a rewrite to `vercel.json` so the browser stays on one origin (the admin
+   cookie is `SameSite=Strict` and would not be sent cross-site):
+
+   ```json
+   "rewrites": [
+     { "source": "/api/(.*)", "destination": "https://<your-service>.onrender.com/api/$1" }
+   ]
+   ```
+
+3. Set `CORS_ORIGINS=https://refurbishedelectronics.vercel.app` and
+   `TRUST_PROXY=true` on the backend (already in `render.yaml`).
+
+See `HOSTING.md` for the full write-up.
+
+---
+
+## 3. Requirement coverage
 
 | Requirement | Status | Where |
 | --- | --- | --- |
@@ -89,7 +135,7 @@ cd backend && npm run hash-password -- "YourStrongPassword"   # -> ADMIN_PASSWOR
 
 ---
 
-## 3. Architecture
+## 4. Architecture
 
 ```
 mock-source-api/            stand-in upstream (Bearer-protected, 30 products, SKU ids)
@@ -125,7 +171,7 @@ Data flow for a purchase:
 
 ---
 
-## 4. Configuration for your real source API
+## 5. Configuration for your real source API
 
 Everything private lives in `backend/.env` (git-ignored; never served to the
 browser). Minimum changes to point at your authorized API:
@@ -171,7 +217,7 @@ the browser. The zone is re-resolved **server-side** at checkout.
 
 ---
 
-## 5. API reference
+## 6. API reference
 
 Public:
 
@@ -202,7 +248,7 @@ Admin (session cookie + `X-CSRF-Token` on writes):
 
 ---
 
-## 6. Why price tampering does not work
+## 7. Why price tampering does not work
 
 * The browser cart stores `{product_id, quantity}` only.
 * `POST /api/orders` ignores every price-like field. It re-reads the current
@@ -221,7 +267,7 @@ KES 1 and placing the order still produced the server total
 
 ---
 
-## 7. Security controls in place
+## 8. Security controls in place
 
 * Server-side pricing, stock and delivery-fee validation (nothing trusted from the client).
 * Input validation: quantity caps, distinct-item cap, Kenyan phone regex, field
@@ -243,7 +289,7 @@ KES 1 and placing the order still produced the server total
 
 ---
 
-## 8. Testing
+## 9. Testing
 
 ```bash
 cd /home/user/storefront
@@ -266,7 +312,7 @@ The suite is safe to re-run, with two caveats:
 
 ---
 
-## 9. Known limitations / next steps
+## 10. Known limitations / next steps
 
 1. **Payment is a placeholder.** `paymentService.js` records a pending payment
    against the server total and exposes a signature-verifying webhook stub.
@@ -285,7 +331,7 @@ The suite is safe to re-run, with two caveats:
 
 ---
 
-## 10. Screenshots
+## 11. Screenshots
 
 `docs/screenshots/` - home, product detail, checkout, order confirmation, admin
 dashboard (captured from the running stack).
