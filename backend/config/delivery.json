@@ -1,0 +1,25 @@
+{
+  "currency": "KES",
+  "default_zone_id": "outside_nairobi",
+  "zones": [
+    {
+      "id": "nairobi",
+      "label": "Nairobi",
+      "fee": 500,
+      "match_terms": [
+        "nairobi", "nairobi county", "westlands", "karen", "ruaka", "riverside",
+        "kasarani", "embakasi", "langata", "kibera", "gigiri", "parklands",
+        "kilimani", "eastleigh", "ngara", "dagoretti", "roysambu", "zimmerman",
+        "kahawa", "uthiru", "donholm", "buruburu", "south b", "south c",
+        "industrial area", "cbd", "upper hill", "hurlingham", "lavington",
+        "kitengela", "syokimau", "mlolongo", "athi river", "thika road", "mombasa road"
+      ]
+    },
+    {
+      "id": "outside_nairobi",
+      "label": "Outside Nairobi",
+      "fee": 1000,
+      "match_terms": []
+    }
+  ]
+}

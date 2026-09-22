@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en-KE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Order received | Nairobi Computer Shop</title>
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header id="site-header"></header>
+
+<main id="main">
+  <div class="container" style="max-width:900px">
+    <div id="success-alert"></div>
+
+    <div class="card order-banner" id="banner">
+      <div class="tick" aria-hidden="true">&#10003;</div>
+      <h1>Order received successfully.</h1>
+      <p class="muted">Thank you! We have recorded your order and will contact you on the number provided to confirm delivery.</p>
+      <p class="order-number" id="order-number">&mdash;</p>
+      <p id="status-badges"></p>
+    </div>
+
+    <div id="order-body"></div>
+  </div>
+</main>
+
+<footer id="site-footer"></footer>
+<script type="module" src="/js/order-success.js"></script>
+</body>
+</html>

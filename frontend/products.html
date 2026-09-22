@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en-KE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>All products | Nairobi Computer Shop</title>
+<meta name="description" content="Browse laptops, desktops, monitors, storage, networking, CCTV and accessories. Prices in KES.">
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header id="site-header"></header>
+
+<main id="main">
+  <div class="container">
+    <div class="section-head">
+      <h1 id="listing-title">All products</h1>
+      <p class="muted" id="result-count" aria-live="polite"></p>
+    </div>
+
+    <div id="listing-alert"></div>
+
+    <div class="layout-2col">
+      <aside class="filters-side" aria-label="Filters">
+        <h2>Categories</h2>
+        <ul class="cat-list" id="cat-list"><li class="muted">Loading&hellip;</li></ul>
+      </aside>
+
+      <div>
+        <div class="toolbar">
+          <div class="field" style="flex:1 1 220px">
+            <label for="f-q">Search</label>
+            <input id="f-q" type="search" placeholder="e.g. HP laptop, monitor, SSD" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="f-sort">Sort by</label>
+            <select id="f-sort">
+              <option value="name_asc">Name (A&ndash;Z)</option>
+              <option value="name_desc">Name (Z&ndash;A)</option>
+              <option value="price_asc">Price (low to high)</option>
+              <option value="price_desc">Price (high to low)</option>
+              <option value="newest">Recently updated</option>
+              <option value="stock_desc">Availability</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-per">Per page</label>
+            <select id="f-per">
+              <option>12</option><option>24</option><option>36</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-stock">Availability</label>
+            <select id="f-stock">
+              <option value="">All</option>
+              <option value="1">In stock only</option>
+            </select>
+          </div>
+          <div class="field"><button class="btn btn-secondary" id="f-reset" type="button">Reset</button></div>
+        </div>
+
+        <div id="products-host">${''}</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer id="site-footer"></footer>
+<script type="module" src="/js/products.js"></script>
+</body>
+</html>

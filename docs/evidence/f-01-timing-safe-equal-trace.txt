@@ -1,0 +1,17 @@
+BEFORE THE FIX - preserved backend log excerpt (execution record ce8c33ae)
+
+[2026-09-22T15:03:16.176Z] GET /api/orders/NCS-260922-DB910?token=WRONG -> 500 INTERNAL_ERROR: Input buffers must have the same byte length
+RangeError: Input buffers must have the same byte length
+    at assertOrderAccess (/home/user/storefront/backend/services/orderService.js:298:25)
+    at Object.getOrderForCustomer (/home/user/storefront/backend/services/orderService.js:307:17)
+    at show (/home/user/storefront/backend/controllers/orderController.js:50:30)
+    at /home/user/storefront/backend/utils/asyncH.js:3:62
+    at Layer.handle [as handle_request] (/home/user/storefront/backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/user/storefront/backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/user/storefront/backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/user/storefront/backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/user/storefront/backend/node_modules/express/lib/router/index.js:284:15
+    at param (/home/user/storefront/backend/node_modules/express/lib/router/index.js:365:14)
+[2026-09-22T15:03:16.183Z] GET /api/orders/NCS-260922-DB910 -> 400 MISSING_TOKEN: An order token is required.
+=== route ===
+

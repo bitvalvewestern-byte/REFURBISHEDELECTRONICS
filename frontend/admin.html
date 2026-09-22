@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en-KE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin | Nairobi Computer Shop</title>
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="admin-body">
+<a class="skip-link" href="#admin-main">Skip to main content</a>
+
+<header class="site-header admin-header">
+  <div class="container header-inner">
+    <a class="brand" href="/"><img src="/assets/logo.svg" alt="" class="brand-logo" width="36" height="36"><span>Nairobi Computer Shop</span></a>
+    <span class="badge badge-status">Admin</span>
+    <div class="header-actions">
+      <span id="who" class="muted"></span>
+      <button class="btn btn-secondary btn-sm" id="logout-btn" type="button" hidden>Sign out</button>
+    </div>
+  </div>
+</header>
+
+<main id="admin-main">
+  <div class="container">
+
+    <!-- Login view -->
+    <section id="login-view" class="card narrow-card" hidden>
+      <h1 style="font-size:1.3rem">Staff sign in</h1>
+      <p class="muted">Admin area for order management and catalogue sync.</p>
+      <div id="login-alert"></div>
+      <form id="login-form" novalidate>
+        <div class="field">
+          <label for="a-user">Username</label>
+          <input id="a-user" name="username" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="a-pass">Password</label>
+          <input id="a-pass" name="password" type="password" autocomplete="current-password" required>
+        </div>
+        <button class="btn btn-primary btn-block" id="login-btn" type="submit">Sign in</button>
+      </form>
+    </section>
+
+    <!-- Dashboard view -->
+    <section id="dash-view" hidden>
+      <h1 style="margin-top:1rem">Dashboard</h1>
+      <div id="dash-alert"></div>
+
+      <div class="stat-grid" id="stats"></div>
+
+      <div class="card" style="margin-top:1.25rem">
+        <div class="row-between">
+          <h2 style="font-size:1.1rem">Catalogue sync</h2>
+          <button class="btn btn-secondary btn-sm" id="sync-btn" type="button">Sync now</button>
+        </div>
+        <p class="muted" id="sync-state">—</p>
+      </div>
+
+      <div class="card" style="margin-top:1.25rem">
+        <div class="row-between">
+          <h2 style="font-size:1.1rem">Orders</h2>
+          <div class="toolbar">
+            <select id="f-status" aria-label="Filter by order status">
+              <option value="">All statuses</option>
+              <option>pending</option><option>confirmed</option><option>paid</option>
+              <option>processing</option><option>shipped</option><option>delivered</option><option>cancelled</option>
+            </select>
+            <select id="f-payment" aria-label="Filter by payment status">
+              <option value="">All payments</option>
+              <option>unpaid</option><option>pending</option><option>paid</option>
+              <option>failed</option><option>refunded</option>
+            </select>
+            <input id="f-q" placeholder="Search order / name / phone" aria-label="Search orders">
+            <button class="btn btn-secondary btn-sm" id="refresh-orders" type="button">Refresh</button>
+          </div>
+        </div>
+        <div id="orders-host"><p class="muted">Loading…</p></div>
+        <div class="pager" id="orders-pager"></div>
+      </div>
+
+      <div class="card" style="margin-top:1.25rem">
+        <div class="row-between">
+          <h2 style="font-size:1.1rem">Products</h2>
+          <input id="p-q" placeholder="Search product" aria-label="Search products">
+        </div>
+        <div id="products-host"><p class="muted">Loading…</p></div>
+        <div class="pager" id="products-pager"></div>
+      </div>
+
+      <div class="card" style="margin-top:1.25rem">
+        <h2 style="font-size:1.1rem">Recent admin activity</h2>
+        <div id="audit-host"></div>
+      </div>
+    </section>
+
+    <p class="muted" style="margin:2rem 0"><a href="/">← Back to shop</a></p>
+  </div>
+</main>
+
+<script type="module" src="/js/admin.js"></script>
+</body>
+</html>

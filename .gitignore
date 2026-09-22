@@ -1,0 +1,15 @@
+# Secrets - never commit
+.env
+.env.*
+!.env.example
+
+# Data / runtime
+backend/data/
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+backend/node_modules/
+node_modules/
+
+# Logs
+*.log

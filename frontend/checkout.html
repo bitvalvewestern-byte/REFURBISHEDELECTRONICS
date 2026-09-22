@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en-KE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guest checkout | Nairobi Computer Shop</title>
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header id="site-header"></header>
+
+<main id="main">
+  <div class="container">
+    <h1>Guest checkout</h1>
+    <p class="muted">No account needed &mdash; just your delivery details. We will call to confirm your order.</p>
+    <div id="checkout-alert"></div>
+
+    <form id="checkout-form" novalidate>
+      <div class="layout-2col" style="grid-template-columns:1fr 340px">
+        <div>
+          <fieldset>
+            <legend>Your details</legend>
+            <div class="form-grid">
+              <div class="field full">
+                <label for="c-name">Full name *</label>
+                <input id="c-name" name="name" type="text" autocomplete="name" required maxlength="120">
+                <span class="field-error" data-for="name"></span>
+              </div>
+              <div class="field">
+                <label for="c-phone">Phone number *</label>
+                <input id="c-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel"
+                       placeholder="07XXXXXXXX" required maxlength="20">
+                <span class="field-error" data-for="phone"></span>
+              </div>
+              <div class="field">
+                <label for="c-email">Email (optional)</label>
+                <input id="c-email" name="email" type="email" autocomplete="email" maxlength="254">
+                <span class="field-error" data-for="email"></span>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Delivery details</legend>
+            <div class="form-grid">
+              <div class="field">
+                <label for="c-county">County *</label>
+                <select id="c-county" name="county" required></select>
+                <span class="field-error" data-for="county"></span>
+              </div>
+              <div class="field">
+                <label for="c-town">Town / City *</label>
+                <input id="c-town" name="town" type="text" autocomplete="address-level2"
+                       placeholder="e.g. Westlands" required maxlength="80">
+                <span class="field-error" data-for="town"></span>
+              </div>
+              <div class="field full">
+                <label for="c-address">Delivery address *</label>
+                <input id="c-address" name="address" type="text" autocomplete="street-address"
+                       placeholder="Building, street, landmark" required maxlength="300">
+                <span class="field-error" data-for="address"></span>
+              </div>
+              <div class="field full">
+                <label for="c-notes">Additional delivery instructions</label>
+                <textarea id="c-notes" name="delivery_instructions" maxlength="500"
+                          placeholder="Gate code, preferred delivery time, contact person…"></textarea>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Delivery zone</legend>
+            <p class="muted">The exact delivery fee is applied and verified on our server.</p>
+            <div class="radio-row" id="zone-row">
+              <label class="radio-card"><input type="radio" name="zone" value="" checked disabled>
+                <span><strong>Loading delivery zones…</strong><span class="muted">Please wait</span></span></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Payment</legend>
+            <p class="muted">Payment provider is not enabled yet in this build. Your order will be recorded as
+              <strong>unpaid / pending</strong> and our team will contact you to complete payment.</p>
+            <label class="radio-card"><input type="radio" name="payment" value="later" checked>
+              <span><strong>Pay on confirmation / delivery</strong><span class="muted">Recommended for now</span></span></label>
+            <label class="radio-card" style="opacity:.6"><input type="radio" name="payment" value="online" disabled>
+              <span><strong>Pay online</strong><span class="muted">Available once the payment provider is connected</span></span></label>
+          </fieldset>
+        </div>
+
+        <aside class="card order-summary" aria-labelledby="summary-heading">
+          <h2 id="summary-heading" style="font-size:1.05rem">Your order</h2>
+          <div id="summary-items"><p class="muted">Loading&hellip;</p></div>
+          <hr style="border:0;border-top:1px solid var(--grey-200);margin:.75rem 0">
+          <div class="summary-row"><span>Products subtotal</span><strong id="s-subtotal">KES 0</strong></div>
+          <div class="summary-row"><span>Delivery fee <span class="muted" id="s-zone"></span></span><strong id="s-delivery">KES 0</strong></div>
+          <div class="summary-row total"><span>Total to pay</span><span id="s-total">KES 0</span></div>
+          <p class="muted" style="margin-top:.5rem">Totals are calculated on our server from the current catalogue price.</p>
+          <button class="btn btn-primary btn-block" id="place-order" type="submit" style="margin-top:.75rem">Place order</button>
+          <a class="btn btn-secondary btn-block" href="/cart.html" style="margin-top:.5rem">Back to cart</a>
+        </aside>
+      </div>
+    </form>
+  </div>
+</main>
+
+<footer id="site-footer"></footer>
+<script type="module" src="/js/checkout.js"></script>
+</body>
+</html>

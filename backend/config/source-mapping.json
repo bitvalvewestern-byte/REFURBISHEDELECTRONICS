@@ -1,0 +1,26 @@
+{
+  "_comment": [
+    "Maps fields from the authorized source API onto the storefront's normalised model.",
+    "Each key is a list of candidate dotted paths; the FIRST non-empty value wins.",
+    "Adjust these arrays once the real source API response shape is known - no code change needed."
+  ],
+  "id": ["id", "sku", "code", "product_id", "productId", "upc", "uuid"],
+  "name": ["name", "title", "product_name", "productName", "display_name"],
+  "description": ["description", "short_description", "shortDescription", "details", "body_html", "summary"],
+  "image": [
+    "image", "image_url", "imageUrl", "thumbnail", "picture", "main_image",
+    "images.0.url", "images.0.image", "images.0", "photos.0.url", "photos.0"
+  ],
+  "source_price": [
+    "price", "source_price", "sourcePrice", "list_price", "listPrice",
+    "unit_price", "unitPrice", "regular_price", "cost", "amount", "selling_price"
+  ],
+  "currency": ["currency", "currency_code", "currencyCode", "price.currency"],
+  "stock": ["stock", "quantity", "qty", "stock_quantity", "stockQuantity", "inventory", "available", "on_hand"],
+  "category": [
+    "category", "category_name", "categoryName", "product_type", "productType",
+    "type", "categories.0.name", "categories.0", "category.name"
+  ],
+  "updated_at": ["updated_at", "updatedAt", "modified_at", "modifiedAt", "last_updated"],
+  "active": ["active", "is_active", "enabled", "status", "published"]
+}

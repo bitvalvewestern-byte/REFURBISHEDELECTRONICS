@@ -1,0 +1,82 @@
+
+=== 1. Catalogue & pricing integrity ===
+  PASS  health endpoint returns ok
+  PASS  catalogue returns products
+  PASS  public product payload hides source_price
+  PASS  every selling price is exactly 50% of the source price
+  sample: NCS-AC-005: 5800 -> 2900 | NCS-AC-004: 16500 -> 8250 | NCS-TB-001: 68000 -> 34000
+
+=== 2. Delivery fee calculation ===
+  PASS  Nairobi quote = products + KES 500 delivery
+  PASS  Outside-Nairobi quote = products + KES 1000 delivery
+  PASS  "Outside Nairobi" is NOT mis-priced as the cheaper Nairobi zone
+
+=== 3. Guest checkout - server-authoritative pricing ===
+  PASS  order created (HTTP 201)
+  PASS  client-supplied prices ignored
+  PASS  client-supplied statuses ignored (still unpaid/pending)
+  PASS  order carries a high-entropy view token
+  PASS  customer can read own order with token
+  PASS  order lookup without token is rejected
+  PASS  order lookup with a wrong token returns 404 (no enumeration oracle)
+  PASS  short token returns 404 (constant-time compare, no 500)
+  PASS  oversized token returns 404 (constant-time compare, no 500)
+  PASS  404 body does not leak order data
+
+=== 4. Duplicate-order protection ===
+  PASS  replaying the same idempotency key returns the SAME order
+  PASS  fingerprint window blocks an accidental double-submit
+
+=== 5. Input validation ===
+  PASS  quantity above the per-item cap is rejected
+  PASS  zero quantity is rejected
+  PASS  negative quantity is rejected
+  PASS  unknown product id is rejected
+  PASS  out-of-stock product (NCS-LP-004) cannot be ordered
+  PASS  invalid Kenyan phone number is rejected
+
+=== 6. Payment (placeholder provider) ===
+  PASS  payment reference created
+  PASS  payment amount is server-derived, not client-supplied
+  PASS  payment creation requires the order token
+  PASS  client-supplied payment amount is ignored
+
+=== 7. Admin area - authentication & CSRF ===
+  PASS  admin orders require authentication
+  PASS  admin stats require authentication
+  PASS  admin sync requires authentication
+  PASS  wrong admin password is rejected
+  PASS  valid admin login succeeds
+  PASS  session cookie is HttpOnly
+  PASS  session cookie is SameSite=Strict
+  PASS  authenticated admin can list orders
+  PASS  order list exposes source price to staff only (expected)
+  PASS  state-changing admin call without CSRF token is rejected (403)
+  PASS  state-changing admin call with a wrong CSRF token is rejected (403)
+  PASS  admin can update order status with a valid CSRF token
+  PASS  unknown order status is rejected
+
+=== 8. Front-end pages served ===
+  PASS  GET / -> 200
+  PASS  GET /index.html -> 200
+  PASS  GET /products.html -> 200
+  PASS  GET /product.html?id=NCS-AC-002 -> 200
+  PASS  GET /cart.html -> 200
+  PASS  GET /checkout.html -> 200
+  PASS  GET /order-success.html -> 200
+  PASS  GET /admin -> 200
+  PASS  GET /admin.html -> 200
+  PASS  GET /nonexistent-page-xyz -> 404
+
+=== 9. Order cancellation restocks inventory ===
+  PASS  checkout decrements stock (118 -> 115)
+  PASS  cancelling restocks (115 -> 118)
+
+=== 10. Frontend module import integrity ===
+  PASS  every named import resolves to a real export (blank-page failure mode)
+
+=== 11. Rate limiting on the order endpoints ===
+  PASS  burst of 64 quote requests (limit 60/min) eventually returns HTTP 429
+  PASS  rate-limited response is a clean JSON error (no stack trace)
+
+================ 57 passed, 0 failed ================

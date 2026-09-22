@@ -1,0 +1,25 @@
+{
+  "name": "ncs-storefront-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Separate storefront backend for Nairobi Computer Shop - syncs products from an authorized source API, applies a 50% selling price and handles guest checkout with server-authoritative pricing.",
+  "main": "server.js",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "hash-password": "node scripts/hash-password.js",
+    "mock-source": "node ../mock-source-api/server.js",
+    "sync": "node -e \"require('./services/productService').syncProducts({force:true}).then(r=>{console.log(r);process.exit(0)}).catch(e=>{console.error(e.code||e.message);process.exit(1)})\"",
+    "test": "node --test test/"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.4.1",
+    "helmet": "^8.0.0"
+  }
+}
