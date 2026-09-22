@@ -144,3 +144,16 @@ DB_FILE=/tmp/start-test.sqlite PORT=8091 ADMIN_PASSWORD='TestPassword123' node s
 
 `dotenv` never overrides real environment variables, so the CLI values win over
 `backend/.env`.
+### Current temporary wiring
+
+`vercel.json` currently proxies `/api/*` to the temporary sandbox backend
+(`https://8080-i4wtqey543n4xvrw9zxpe.e2b.app`). That URL exists only while the
+sandbox runs. Once a permanent backend host exists (e.g. the Render service
+above), change the rewrite destination to
+`https://<your-service>.onrender.com/api/:path*` - that is the only change
+needed.
+
+Backend side of the current wiring (applied in the sandbox `backend/.env`):
+`CORS_ORIGINS` lists both the Vercel domain and the sandbox origin, and
+`TRUST_PROXY=true` because requests now arrive through the Vercel proxy
+(without it, every visitor would share one rate-limit bucket).
