@@ -6,12 +6,12 @@ renderFooter();
 
 const featured = document.getElementById('featured');
 const alertHost = document.getElementById('home-alert');
-featured.innerHTML = skeletonGrid(8);
+featured.innerHTML = skeletonGrid(12);
 
 async function loadHome() {
   try {
     const [productsRes, catsRes] = await Promise.all([
-      apiFetch('/products?per_page=8&sort=newest'),
+      apiFetch('/products?per_page=12&sort=newest'),
       apiFetch('/products/categories')
     ]);
 

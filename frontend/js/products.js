@@ -5,7 +5,7 @@ const state = {
   q: param('q') || '',
   category: param('category') || '',
   sort: param('sort') || 'name_asc',
-  perPage: parseInt(param('per_page'), 10) || 12,
+  perPage: parseInt(param('per_page'), 10) || 36,
   inStock: param('in_stock') === '1' ? '1' : '',
   page: parseInt(param('page'), 10) || 1
 };
@@ -30,7 +30,7 @@ function syncUrl() {
   if (state.q) p.set('q', state.q);
   if (state.category) p.set('category', state.category);
   if (state.sort !== 'name_asc') p.set('sort', state.sort);
-  if (state.perPage !== 12) p.set('per_page', String(state.perPage));
+  if (state.perPage !== 36) p.set('per_page', String(state.perPage));
   if (state.inStock) p.set('in_stock', state.inStock);
   if (state.page > 1) p.set('page', String(state.page));
   const qs = p.toString();
@@ -123,16 +123,16 @@ document.getElementById('f-sort').addEventListener('change', (e) => {
   state.sort = e.target.value; state.page = 1; syncUrl(); loadProducts();
 });
 document.getElementById('f-per').addEventListener('change', (e) => {
-  state.perPage = parseInt(e.target.value, 10) || 12; state.page = 1; syncUrl(); loadProducts();
+  state.perPage = parseInt(e.target.value, 10) || 36; state.page = 1; syncUrl(); loadProducts();
 });
 document.getElementById('f-stock').addEventListener('change', (e) => {
   state.inStock = e.target.value; state.page = 1; syncUrl(); loadProducts();
 });
 document.getElementById('f-reset').addEventListener('click', () => {
-  state.q = ''; state.category = ''; state.sort = 'name_asc'; state.perPage = 12; state.inStock = ''; state.page = 1;
+  state.q = ''; state.category = ''; state.sort = 'name_asc'; state.perPage = 36; state.inStock = ''; state.page = 1;
   document.getElementById('f-q').value = '';
   document.getElementById('f-sort').value = 'name_asc';
-  document.getElementById('f-per').value = '12';
+  document.getElementById('f-per').value = '36';
   document.getElementById('f-stock').value = '';
   syncUrl(); loadCategories(); loadProducts();
 });
