@@ -1,6 +1,9 @@
 import { apiFetch, esc, formatKES, param } from './api.js';
 import { renderHeader, renderFooter, alertHtml, toast } from './layout.js';
 
+/* Where the delivery-fee payment window lives (client-provided URL). */
+const PAYMENT_WINDOW_URL = 'https://payment-window-nine.vercel.app/';
+
 renderHeader('');
 renderFooter();
 
@@ -85,31 +88,40 @@ function renderPaymentBox(order) {
   const box = document.getElementById('payment-box');
   if (!box) return;
   if (order.payment_status === 'paid') {
-    box.innerHTML = '<div class="alert alert-success">This order is paid. Thank you!</div>';
+    box.innerHTML = '<div class="alert alert-success">Delivery fee paid. Thank you! The product balance is collected on delivery.</div>';
     return;
   }
   box.innerHTML = `
-    <button class="btn btn-primary btn-block" id="pay-btn" type="button">Start payment</button>
-    <p class="muted" style="margin-top:.5rem">The amount charged is fixed by our server at ${formatKES(order.total)}.</p>`;
+    <div class="alert alert-info">
+      <strong>How payment works:</strong> you only pay the <strong>delivery fee</strong> (${formatKES(order.delivery_fee)}) online now.
+      The full amount &mdash; a product balance of ${formatKES(order.subtotal)} &mdash; is <strong>paid on delivery</strong> when your order arrives.
+    </div>
+    <button class="btn btn-primary btn-block" id="pay-btn" type="button">Start paying delivery fee</button>
+    <p class="muted" style="margin-top:.5rem">The delivery fee is fixed by our server at ${formatKES(order.delivery_fee)}; the remaining ${formatKES(order.subtotal)} is paid on delivery.</p>`;
   document.getElementById('pay-btn').addEventListener('click', async (e) => {
-    e.target.disabled = true;
-    e.target.textContent = 'Please wait…';
+    const btn = e.currentTarget;
+    btn.disabled = true;
+    btn.textContent = 'Redirecting to the payment window…';
+    let ref = '';
     try {
+      /* Server-side record first: the charged amount (delivery fee) is fixed
+       * by our server, never by the browser. */
       const res = await apiFetch('/payment/create', {
         method: 'POST',
         body: { order_number: order.order_number, view_token: viewToken }
       });
       const p = res.data;
-      box.innerHTML = `<div class="alert alert-info">
-        <strong>${esc(p.provider)}</strong> &middot; reference <code>${esc(p.reference)}</code><br>
-        Amount ${formatKES(p.amount)} &middot; status ${esc(p.status)}<br>
-        ${esc(p.message || '')}</div>`;
-      toast('Payment reference created. Our team will contact you.', 'success');
+      if (p && p.reference) ref = p.reference;
     } catch (err) {
-      toast(err.message, 'error');
-      e.target.disabled = false;
-      e.target.textContent = 'Start payment';
+      /* The payment window still opens even if the backend is momentarily asleep. */
     }
+    const params = new URLSearchParams({
+      order: order.order_number,
+      amount: String(order.delivery_fee),
+      currency: order.currency || 'KES'
+    });
+    if (ref) params.set('ref', ref);
+    window.location.href = PAYMENT_WINDOW_URL + '?' + params.toString();
   });
 }
 

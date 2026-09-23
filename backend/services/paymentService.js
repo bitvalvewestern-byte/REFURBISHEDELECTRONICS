@@ -8,7 +8,7 @@
  *
  *   browser --(order_number + view_token)--> POST /api/payment/create
  *                                             |
- *                                    server reads orders.total  <-- amount
+ *                                    server reads orders.delivery_fee  <-- amount (delivery fee only; balance collected on delivery)
  *                                             |
  *                                   provider.createIntent()
  *                                             |
@@ -30,23 +30,24 @@ const PROVIDER = (process.env.PAYMENT_PROVIDER || 'placeholder').toLowerCase();
 /* Provider implementations                                            */
 /* ------------------------------------------------------------------ */
 const providers = {
-  /** No-op placeholder. Records a pending payment against the real total. */
+  /** No-op placeholder. Records a pending payment against the delivery fee. */
   async placeholder(order) {
     return {
       provider: 'placeholder',
       reference: `PLACEHOLDER-${crypto.randomBytes(6).toString('hex').toUpperCase()}`,
       status: 'pending',
-      amount: order.total,
+      amount: order.delivery_fee,
       currency: order.currency,
       // Front-end redirects here; a real provider returns its hosted checkout URL.
       redirect_url: `/order-success.html?order=${encodeURIComponent(order.order_number)}&token=${encodeURIComponent(order.view_token)}&payment=pending`,
-      message: 'Payment provider not configured yet. Order recorded with an outstanding balance.'
+      message: 'Only the delivery fee is charged online now; the product balance is paid on delivery.'
     };
   },
 
   /**
    * Skeleton for a real provider. Fill in the API call using env credentials.
-   * IMPORTANT: `order.total` is the server-calculated amount - never take an
+   * IMPORTANT: `order.delivery_fee` is the server-calculated amount (delivery
+   * fee only - the product balance is collected on delivery) - never take an
    * amount from the request body.
    */
   async mpesa(order) {
@@ -54,7 +55,7 @@ const providers = {
       throw serverError('PAYMENT_NOT_CONFIGURED', 'Payment is not configured yet.');
     }
     // TODO: obtain an OAuth token, then POST STK Push with:
-    //   Amount: order.total, AccountReference: order.order_number, PhoneNumber: order.customer_phone
+    //   Amount: order.delivery_fee (delivery fee only), AccountReference: order.order_number, PhoneNumber: order.customer_phone
     throw serverError('PAYMENT_NOT_CONFIGURED', 'M-Pesa integration not implemented in this build.');
   }
 };
@@ -73,14 +74,14 @@ async function createPayment({ order_number, view_token }) {
     throw conflict('ORDER_CANCELLED', 'This order has been cancelled.');
   }
   if (order.payment_status === 'paid') {
-    return { already_paid: true, order_number: order.order_number, status: 'paid', amount: order.total, currency: order.currency };
+    return { already_paid: true, order_number: order.order_number, status: 'paid', amount: order.delivery_fee, currency: order.currency };
   }
 
   const quote = activeProvider();
   const result = await quote(order);
 
   // Guard: the provider must never be able to change the authoritative amount.
-  if (Number(result.amount) !== Number(order.total)) {
+  if (Number(result.amount) !== Number(order.delivery_fee)) {
     throw serverError('PAYMENT_AMOUNT_MISMATCH', 'Payment could not be initialised.');
   }
 
@@ -88,7 +89,7 @@ async function createPayment({ order_number, view_token }) {
   dbx.run(`
     INSERT INTO payments (order_id, provider, provider_ref, amount, currency, status, payload, created_at, updated_at)
     VALUES (?,?,?,?,?,?,?,?,?)
-  `, [order.id, result.provider, result.reference, order.total, order.currency, result.status,
+  `, [order.id, result.provider, result.reference, order.delivery_fee, order.currency, result.status,
       JSON.stringify({ message: result.message || null }), ts, ts]);
 
   if (order.payment_status === 'unpaid') {
@@ -100,7 +101,7 @@ async function createPayment({ order_number, view_token }) {
     provider: result.provider,
     reference: result.reference,
     status: result.status,
-    amount: order.total,
+    amount: order.delivery_fee,
     currency: order.currency,
     redirect_url: result.redirect_url,
     message: result.message
