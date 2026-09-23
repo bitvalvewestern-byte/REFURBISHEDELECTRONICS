@@ -1,4 +1,4 @@
-import { apiFetch, esc, param, debounce } from './api.js';
+import { apiFetch, esc, param, debounce, saveCatalogue, readCatalogue, saveCategories, readCategories, staleNotice, loadSnapshot, snapshotNotice } from './api.js';
 import { renderHeader, renderFooter, productCardHtml, bindAddButtons, alertHtml, skeletonGrid } from './layout.js';
 
 const state = {
@@ -54,13 +54,84 @@ async function loadCategories() {
   try {
     const res = await apiFetch('/products/categories');
     const cats = res.data || [];
+    saveCategories(cats);
     const all = `<li><a href="#" data-cat="" ${state.category ? '' : 'aria-current="true"'}>All products <span class="count">${cats.reduce((n, c) => n + c.count, 0)}</span></a></li>`;
     catList.innerHTML = all + cats.map((c) => `
       <li><a href="#" data-cat="${esc(c.name)}" ${state.category === c.name ? 'aria-current="true"' : ''}>
         ${esc(c.name)} <span class="count">${c.count}</span></a></li>`).join('');
   } catch {
-    catList.innerHTML = '<li class="muted">Categories unavailable</li>';
+    let cachedCats = readCategories();
+    if (!cachedCats || !cachedCats.length) {
+      const snap = await loadSnapshot();        /* bundled static fallback */
+      cachedCats = snap ? snap.categories : null;
+    }
+    if (cachedCats && cachedCats.length) {
+      const all = `<li><a href="#" data-cat="" ${state.category ? '' : 'aria-current="true"'}>All products <span class="count">${cachedCats.reduce((n, c) => n + c.count, 0)}</span></a></li>`;
+      catList.innerHTML = all + cachedCats.map((c) => `
+      <li><a href="#" data-cat="${esc(c.name)}" ${state.category === c.name ? 'aria-current="true"' : ''}>
+        ${esc(c.name)} <span class="count">${c.count}</span></a></li>`).join('');
+    } else {
+      catList.innerHTML = '<li class="muted">Categories unavailable</li>';
+    }
   }
+}
+
+/* Client-side filter/sort used only when we have to fall back to the cache. */
+function applyFilters(items) {
+  let out = items.slice();
+  if (state.category) out = out.filter((p) => p.category === state.category);
+  if (state.inStock) out = out.filter((p) => p.in_stock);
+  if (state.q) {
+    const needle = state.q.toLowerCase();
+    out = out.filter((p) => `${p.name} ${p.category} ${p.description || ''}`.toLowerCase().includes(needle));
+  }
+  const sorters = {
+    name_asc: (a, b) => String(a.name).localeCompare(String(b.name)),
+    name_desc: (a, b) => String(b.name).localeCompare(String(a.name)),
+    price_asc: (a, b) => a.selling_price - b.selling_price,
+    price_desc: (a, b) => b.selling_price - a.selling_price,
+    stock_desc: (a, b) => (b.stock || 0) - (a.stock || 0),
+    newest: (a, b) => String(b.updated_at || '').localeCompare(String(a.updated_at || ''))
+  };
+  out.sort(sorters[state.sort] || sorters.name_asc);
+  return out;
+}
+
+/* Render the cached catalogue when the live API is unreachable.   */
+/* Fallback order: localStorage (freshest)  ->  bundled snapshot.   */
+async function renderFromCache() {
+  const cached = readCatalogue();
+  if (cached) return renderListing(cached.items, staleNotice(cached.at));
+
+  const snap = await loadSnapshot();
+  if (snap) {
+    if (catList.querySelector('.muted')) {
+      const all = `<li><a href="#" data-cat="" ${state.category ? '' : 'aria-current="true"'}>All products <span class="count">${snap.items.length}</span></a></li>`;
+      catList.innerHTML = all + snap.categories.map((c) => `
+        <li><a href="#" data-cat="${esc(c.name)}" ${state.category === c.name ? '' : 'aria-current="true"'}>
+          ${esc(c.name)} <span class="count">${c.count}</span></a></li>`).join('');
+    }
+    return renderListing(snap.items, snapshotNotice(snap.at));
+  }
+  return false;
+}
+
+/* Paint a listing from a plain item array + a notice banner. */
+function renderListing(rawItems, notice) {
+  const filtered = applyFilters(rawItems);
+  const start = (state.page - 1) * state.perPage;
+  const pageItems = filtered.slice(start, start + state.perPage);
+  alertHost.innerHTML = alertHtml(notice, 'warn');
+  if (!pageItems.length) {
+    host.innerHTML = '<div class="empty-state"><h2>No products found</h2><p>Try a different search term or clear the filters.</p></div>';
+    countEl.textContent = '0 products';
+    return true;
+  }
+  host.innerHTML = `<div class="product-grid" id="grid">${pageItems.map(productCardHtml).join('')}</div>`;
+  bindAddButtons(document.getElementById('grid'), new Map(pageItems.map((x) => [x.id, x])));
+  const totalPages = Math.max(1, Math.ceil(filtered.length / state.perPage));
+  countEl.textContent = `${filtered.length} product${filtered.length === 1 ? '' : 's'} · page ${state.page} of ${totalPages}`;
+  return true;
 }
 
 async function loadProducts() {
@@ -82,6 +153,11 @@ async function loadProducts() {
     const items = res.data || [];
     const byId = new Map(items.map((x) => [x.id, x]));
 
+    /* Refresh the fallback cache from a full, unfiltered listing. */
+    if (state.page === 1 && !state.q && !state.category && !state.inStock) {
+      saveCatalogue(items);
+    }
+
     if (!items.length) {
       host.innerHTML = '<div class="empty-state"><h2>No products found</h2><p>Try a different search term or clear the filters.</p></div>';
       countEl.textContent = '0 products';
@@ -99,6 +175,7 @@ async function loadProducts() {
       });
     });
   } catch (err) {
+    if (await renderFromCache()) return;
     host.innerHTML = '';
     countEl.textContent = '';
     alertHost.innerHTML = alertHtml(err.message, 'error');

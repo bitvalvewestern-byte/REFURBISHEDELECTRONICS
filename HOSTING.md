@@ -157,3 +157,51 @@ Backend side of the current wiring (applied in the sandbox `backend/.env`):
 `CORS_ORIGINS` lists both the Vercel domain and the sandbox origin, and
 `TRUST_PROXY=true` because requests now arrive through the Vercel proxy
 (without it, every visitor would share one rate-limit bucket).
+---
+
+## Why product listings keep working even when the backend sleeps
+
+The temporary backend lives on an ephemeral sandbox. When that sandbox idles or
+restarts, `/api/*` stops answering and the storefront would otherwise show an
+empty listing. The front-end now degrades in three steps instead of failing:
+
+1. **Live API** - `/api/products` (normal path).
+2. **localStorage cache** - the last successful catalogue fetch, kept in the
+   browser. Survives short API blips and repeat visits.
+3. **Bundled snapshot** - `frontend/data/catalogue.json`, a static file served
+   by the static host itself. Works for a first-time visitor with no cache, so
+   browsing never depends on the backend being awake.
+
+A warning banner is shown whenever steps 2 or 3 are used. All three sources are
+display-only: `POST /api/orders/quote` and `POST /api/orders` re-price every
+line from the database, so a stale displayed price can never be checked out.
+
+### Refreshing the snapshot
+
+The snapshot is committed to the repo. Rebuild it whenever the catalogue
+changes and the backend is reachable:
+
+```bash
+python3 scripts/build-catalogue-snapshot.py http://localhost:8080
+# or against the deployed backend:
+python3 scripts/build-catalogue-snapshot.py https://<backend-host>
+```
+
+Only display fields are copied (id, name, description, image, selling_price,
+currency, stock, in_stock, category, updated_at) - no cost price, no margin, no
+supplier data.
+
+### Static cache headers
+
+`vercel.json` serves HTML and JS with `Cache-Control: no-cache, must-revalidate`.
+Vercel's ETag makes the revalidation cheap (304s), and it removes the stale-JS
+problem where an old bundle kept running after a deploy.
+
+### Source ordering caveat
+
+Steps 2 and 3 can only ever show what the live API has already exposed. If the
+site has never once loaded successfully in a given browser (step 2 empty) the
+bundled snapshot still covers it - but if a *new* product was just added and the
+backend is down, that product appears only after the next successful API load or
+snapshot rebuild. The permanent fix for this remains a persistent backend host
+(Render), as described above.

@@ -1,0 +1,421 @@
+{
+ "generated_at": "2026-09-23T07:40:34.625829+00:00",
+ "source": "storefront-backend",
+ "count": 30,
+ "items": [
+  {
+   "id": "NCS-AC-005",
+   "name": "Anker 65W GaN USB-C Charger",
+   "description": "65W GaN II fast charger, 2x USB-C + 1x USB-A, compact travel design.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/8b/1b/8b1b2c708f1bd2db483daef4161c2c19.jpg",
+   "selling_price": 2900,
+   "currency": "KES",
+   "stock": 45,
+   "in_stock": true,
+   "category": "Power Supply & Backup",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-AC-004",
+   "name": "APC BX1100LI-MS Back-UPS 1100VA",
+   "description": "1100VA/660W UPS, 6 IEC outlets, surge protection, up to 45 minutes backup on load.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/86/35/86352fbe602e7db264923be4e7a8a28e.jpg",
+   "selling_price": 8250,
+   "currency": "KES",
+   "stock": 25,
+   "in_stock": true,
+   "category": "Power Supply & Backup",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-TB-001",
+   "name": "Apple iPad 10th Gen 64GB Wi-Fi",
+   "description": "10.9-inch Liquid Retina, A14 Bionic, 64GB, 12MP front camera, USB-C.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/b1/74/b174cd43814cab77cf72f3163a3b596d.jpg",
+   "selling_price": 34000,
+   "currency": "KES",
+   "stock": 11,
+   "in_stock": true,
+   "category": "Tablets",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-LP-003",
+   "name": "Apple MacBook Air M2 13-inch 8GB/256GB",
+   "description": "Apple M2 chip, 13.6-inch Liquid Retina, 8GB unified memory, 256GB SSD, macOS. Sealed, 1-year warranty.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/13/c8/13c86738554107a77722282f6790c777.jpg",
+   "selling_price": 77500,
+   "currency": "KES",
+   "stock": 5,
+   "in_stock": true,
+   "category": "Laptops",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-LP-006",
+   "name": "Asus ROG Strix G16 RTX 4060 Gaming Laptop",
+   "description": "16-inch 165Hz QHD, Intel Core i7-13650HX, 16GB DDR5, 1TB SSD, NVIDIA RTX 4060 8GB.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/31/a2/31a29527b2e66e07b78b72313f402bf0.jpg",
+   "selling_price": 122500,
+   "currency": "KES",
+   "stock": 4,
+   "in_stock": true,
+   "category": "Gaming Laptops",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-NW-002",
+   "name": "Cisco SG110-16 16-Port Gigabit Switch",
+   "description": "16-port unmanaged gigabit Ethernet switch, rack mountable, plug and play.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/a3/2e/a32eb9960df30713b363b2274e6c182b.jpg",
+   "selling_price": 10500,
+   "currency": "KES",
+   "stock": 12,
+   "in_stock": true,
+   "category": "Networking",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-CV-003",
+   "name": "Dahua 5MP Dome Camera with Audio",
+   "description": "5MP dome camera, built-in microphone, smart IR 30m, IP67, PoE.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/b1/39/b139fc9d33894931e9dca1dc32af3fdb.jpg",
+   "selling_price": 4450,
+   "currency": "KES",
+   "stock": 33,
+   "in_stock": true,
+   "category": "CCTV & Surveillance",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-LP-002",
+   "name": "Dell Latitude 5420 Core i7 11th Gen 16GB/256GB SSD",
+   "description": "14-inch FHD business laptop, Intel Core i7-1185G7, 16GB RAM, 256GB NVMe, backlit keyboard.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/09/de/09deaa4a47888454340b84bea3dd57cc.jpg",
+   "selling_price": 52500,
+   "currency": "KES",
+   "stock": 7,
+   "in_stock": true,
+   "category": "Laptops",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-DK-002",
+   "name": "Dell OptiPlex 7080 Micro Core i5 8GB/256GB",
+   "description": "Ultra-compact desktop, Intel Core i5-10500T, 8GB RAM, 256GB SSD.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/48/f1/48f1a91e3507bdfbefe7eb7864023df5.jpg",
+   "selling_price": 26000,
+   "currency": "KES",
+   "stock": 15,
+   "in_stock": true,
+   "category": "Desktops",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-MN-001",
+   "name": "Dell P2422H 24-inch IPS Monitor",
+   "description": "24-inch Full HD IPS monitor, 1920x1080, 60Hz, HDMI/DP/VGA, height adjustable stand.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/55/fd/55fd25773e0858a94e50d09000e07539.jpg",
+   "selling_price": 16000,
+   "currency": "KES",
+   "stock": 22,
+   "in_stock": true,
+   "category": "Monitors",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-CV-001",
+   "name": "Hikvision DS-2CD1043G0-I 4MP IP Bullet Camera",
+   "description": "4MP IR fixed bullet network camera, 30m IR range, IP67, H.265+, PoE.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/a5/ad/a5add51ba36f022f227b758145aafcf5.jpg",
+   "selling_price": 6250,
+   "currency": "KES",
+   "stock": 40,
+   "in_stock": true,
+   "category": "CCTV & Surveillance",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-CV-002",
+   "name": "Hikvision DS-7608NI-K2 8-Channel NVR",
+   "description": "8-channel 4K NVR, 2 SATA bays up to 20TB, H.265+, HDMI/VGA output.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/ab/75/ab755482965c8bca98fd48c97c8fd77b.jpg",
+   "selling_price": 17000,
+   "currency": "KES",
+   "stock": 14,
+   "in_stock": true,
+   "category": "CCTV & Surveillance",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-DK-003",
+   "name": "HP All-in-One 24 Core i5 12th Gen 8GB/512GB",
+   "description": "23.8-inch FHD all-in-one, Intel Core i5-1235U, 8GB DDR4, 512GB SSD, keyboard and mouse included.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/4f/b5/4fb5210730899838f4604ae7bbc9f54f.jpg",
+   "selling_price": 46000,
+   "currency": "KES",
+   "stock": 6,
+   "in_stock": true,
+   "category": "Desktops",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-LP-001",
+   "name": "HP EliteBook 840 G8 Core i5 11th Gen 16GB/512GB SSD",
+   "description": "14-inch business ultrabook, Intel Core i5-1145G7, 16GB DDR4, 512GB NVMe SSD, Windows 11 Pro. 6-month warranty.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/02/af/02aff298e1fadc1e7b3980eb1c5a4703.jpg",
+   "selling_price": 59000,
+   "currency": "KES",
+   "stock": 12,
+   "in_stock": true,
+   "category": "Laptops",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-DK-001",
+   "name": "HP EliteDesk 800 G6 SFF Core i7 16GB/512GB",
+   "description": "Small form factor desktop, Intel Core i7-10700, 16GB DDR4, 512GB NVMe, Wi-Fi + Bluetooth.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/3e/f5/3ef5897b650dbe8715698b248c94aaa9.jpg",
+   "selling_price": 39500,
+   "currency": "KES",
+   "stock": 9,
+   "in_stock": true,
+   "category": "Desktops",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-LP-005",
+   "name": "HP Pavilion 15 Core i5 12th Gen 8GB/512GB",
+   "description": "15.6-inch FHD student laptop, Intel Core i5-1235U, 8GB DDR4, 512GB SSD, Windows 11 Home.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/28/63/28637dbff7689fdcbc6fdfdeb898d68a.jpg",
+   "selling_price": 44000,
+   "currency": "KES",
+   "stock": 18,
+   "in_stock": true,
+   "category": "Laptops",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-AC-002",
+   "name": "HP Wireless Mouse 200",
+   "description": "Wireless optical mouse, 1000 DPI, USB nano receiver, ambidextrous design.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/80/86/8086c64cb349e77b2391055ba06fef21.jpg",
+   "selling_price": 800,
+   "currency": "KES",
+   "stock": 120,
+   "in_stock": true,
+   "category": "Keyboards & Mouse",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-LP-004",
+   "name": "Lenovo ThinkPad T14 Gen 3 Ryzen 5 16GB/512GB",
+   "description": "14-inch ThinkPad, AMD Ryzen 5 PRO 6650U, 16GB, 512GB SSD. Currently out of stock.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/16/fa/16faaa58371a48dfa24eeb25309ce107.jpg",
+   "selling_price": 48250,
+   "currency": "KES",
+   "stock": 0,
+   "in_stock": false,
+   "category": "Laptops",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-MN-003",
+   "name": "LG 22MK400H 22-inch Monitor",
+   "description": "21.5-inch Full HD LED monitor, 1920x1080, VGA + HDMI, wall mountable.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/6e/c1/6ec16b9360953b9925c0cd1efc03f989.jpg",
+   "selling_price": 9750,
+   "currency": "KES",
+   "stock": 30,
+   "in_stock": true,
+   "category": "Monitors",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-AC-001",
+   "name": "Logitech MK270 Wireless Keyboard and Mouse Combo",
+   "description": "2.4GHz wireless combo, 8 multimedia keys, long battery life, nano receiver.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/78/48/7848f7f9ded741a4aae1c8f0ff58ba72.jpg",
+   "selling_price": 2100,
+   "currency": "KES",
+   "stock": 60,
+   "in_stock": true,
+   "category": "Keyboards & Mouse",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-LP-007",
+   "name": "MacBook Pro 14 M3 Pro 18GB/512GB",
+   "description": "Apple M3 Pro, 14.2-inch Liquid Retina XDR, 18GB unified memory, 512GB SSD.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/32/e1/32e14785a6c98ee8e4c22de3f515cac0.jpg",
+   "selling_price": 155000,
+   "currency": "KES",
+   "stock": 3,
+   "in_stock": true,
+   "category": "Gaming Laptops",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-ST-001",
+   "name": "Samsung 970 EVO Plus 1TB NVMe SSD",
+   "description": "1TB PCIe Gen3 x4 NVMe M.2 SSD, up to 3500MB/s read, 5-year warranty.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/8c/40/8c4021e66803ce9483bd612a0a85a899.jpg",
+   "selling_price": 7250,
+   "currency": "KES",
+   "stock": 40,
+   "in_stock": true,
+   "category": "Storage",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-PH-001",
+   "name": "Samsung Galaxy A55 5G 8GB/256GB",
+   "description": "6.6-inch Super AMOLED 120Hz, Exynos 1480, 8GB/256GB, 50MP OIS triple camera, 5000mAh.",
+   "image": "",
+   "selling_price": 26000,
+   "currency": "KES",
+   "stock": 16,
+   "in_stock": true,
+   "category": "Smartphones",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-TB-002",
+   "name": "Samsung Galaxy Tab A9+ 128GB",
+   "description": "11-inch TFT 90Hz display, Snapdragon 695, 4GB/128GB, quad speakers.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/ba/3a/ba3ad6b5e2ff38879f394543c202c769.jpg",
+   "selling_price": 19500,
+   "currency": "KES",
+   "stock": 13,
+   "in_stock": true,
+   "category": "Tablets",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-MN-002",
+   "name": "Samsung Odyssey G5 27-inch 144Hz Curved Gaming Monitor",
+   "description": "27-inch QHD 2560x1440, 144Hz, 1ms, curved VA panel, FreeSync.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/6e/7e/6e7e90166df0df7c7f285635ff962345.jpg",
+   "selling_price": 29000,
+   "currency": "KES",
+   "stock": 8,
+   "in_stock": true,
+   "category": "Monitors",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-ST-003",
+   "name": "SanDisk Extreme Portable SSD 1TB",
+   "description": "1TB USB-C portable SSD, up to 1050MB/s, IP55 water and dust resistance.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/95/64/9564806c1a739b203ccb42558814d00c.jpg",
+   "selling_price": 8950,
+   "currency": "KES",
+   "stock": 20,
+   "in_stock": true,
+   "category": "Storage",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-ST-002",
+   "name": "Seagate Barracuda 2TB Internal Hard Drive",
+   "description": "2TB 3.5-inch SATA III HDD, 7200RPM, 256MB cache.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/94/e7/94e77cce65aa15fc5d5c479346cd5291.jpg",
+   "selling_price": 4900,
+   "currency": "KES",
+   "stock": 35,
+   "in_stock": true,
+   "category": "Storage",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-AC-003",
+   "name": "Sony WH-1000XM4 Wireless Noise Cancelling Headphones",
+   "description": "Industry-leading noise cancellation, 30-hour battery, multipoint Bluetooth, touch controls.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/81/6e/816e53cc28bd5185b8116cec4a8bfcc4.jpg",
+   "selling_price": 19000,
+   "currency": "KES",
+   "stock": 10,
+   "in_stock": true,
+   "category": "Headphones",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-NW-001",
+   "name": "TP-Link Archer AX23 Wi-Fi 6 Router",
+   "description": "AX1800 dual-band Wi-Fi 6 router, 4 antennas, OFDMA, MU-MIMO, OneMesh compatible.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/99/27/9927064266f5d689a0b4acb1b846c061.jpg",
+   "selling_price": 4750,
+   "currency": "KES",
+   "stock": 28,
+   "in_stock": true,
+   "category": "Networking",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  },
+  {
+   "id": "NCS-AC-006",
+   "name": "UGREEN USB-C to HDMI 4K Adapter",
+   "description": "USB-C to HDMI 4K@60Hz adapter, aluminium shell, plug and play, Thunderbolt 3 compatible.",
+   "image": "https://nairobicomputershop.co.ke/media/cache/bb/da/bbdaec812c9e870addac0cd158c03640.jpg",
+   "selling_price": 1400,
+   "currency": "KES",
+   "stock": 75,
+   "in_stock": true,
+   "category": "Cables & Converters",
+   "updated_at": "2026-09-23T07:38:36.485Z"
+  }
+ ],
+ "categories": [
+  {
+   "name": "Cables & Converters",
+   "count": 1
+  },
+  {
+   "name": "CCTV & Surveillance",
+   "count": 3
+  },
+  {
+   "name": "Desktops",
+   "count": 3
+  },
+  {
+   "name": "Gaming Laptops",
+   "count": 2
+  },
+  {
+   "name": "Headphones",
+   "count": 1
+  },
+  {
+   "name": "Keyboards & Mouse",
+   "count": 2
+  },
+  {
+   "name": "Laptops",
+   "count": 5
+  },
+  {
+   "name": "Monitors",
+   "count": 3
+  },
+  {
+   "name": "Networking",
+   "count": 2
+  },
+  {
+   "name": "Power Supply & Backup",
+   "count": 2
+  },
+  {
+   "name": "Smartphones",
+   "count": 1
+  },
+  {
+   "name": "Storage",
+   "count": 3
+  },
+  {
+   "name": "Tablets",
+   "count": 2
+  }
+ ]
+}

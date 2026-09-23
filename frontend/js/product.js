@@ -1,4 +1,4 @@
-import { apiFetch, esc, formatKES, safeImage, imagePlaceholder, param } from './api.js';
+import { apiFetch, esc, formatKES, safeImage, imagePlaceholder, param, readCatalogue, loadSnapshot, staleNotice, snapshotNotice } from './api.js';
 import { renderHeader, renderFooter, productCardHtml, bindAddButtons, alertHtml, toast } from './layout.js';
 import * as cart from './cart.js';
 
@@ -56,6 +56,34 @@ function detailHtml(p) {
   </div>`;
 }
 
+/* Paint a product (from the live API or a fallback source). */
+function paint(p, related) {
+  document.title = `${p.name} | Nairobi Computer Shop`;
+  document.getElementById('crumb-cat').innerHTML = ` / <a href="/products.html?category=${encodeURIComponent(p.category)}">${esc(p.category)}</a>`;
+  host.innerHTML = detailHtml(p);
+
+  /* quantity controls */
+  const input = document.getElementById('q-val');
+  const clamp = (v) => Math.max(1, Math.min(parseInt(v, 10) || 1, maxQty(p)));
+  document.getElementById('q-inc').addEventListener('click', () => { input.value = clamp(Number(input.value) + 1); });
+  document.getElementById('q-dec').addEventListener('click', () => { input.value = clamp(Number(input.value) - 1); });
+  input.addEventListener('change', () => { input.value = clamp(input.value); });
+
+  document.getElementById('add-btn').addEventListener('click', () => {
+    const qty = clamp(input.value);
+    cart.add(p, qty);
+    toast(`Added ${qty} × “${p.name}” to your cart.`, 'success');
+  });
+
+  const others = (related || []).filter((x) => x.id !== p.id).slice(0, 4);
+  if (others.length) {
+    relatedHost.innerHTML = `<div class="product-grid">${others.map(productCardHtml).join('')}</div>`;
+    bindAddButtons(relatedHost, new Map(others.map((x) => [x.id, x])));
+  } else {
+    relatedHost.innerHTML = '<p class="muted">No related products.</p>';
+  }
+}
+
 async function load() {
   if (!id) {
     host.innerHTML = '';
@@ -64,35 +92,28 @@ async function load() {
   }
   try {
     const { data: p } = await apiFetch(`/products/${encodeURIComponent(id)}`);
-    document.title = `${p.name} | Nairobi Computer Shop`;
-    document.getElementById('crumb-cat').innerHTML = ` / <a href="/products.html?category=${encodeURIComponent(p.category)}">${esc(p.category)}</a>`;
-    host.innerHTML = detailHtml(p);
-
-    /* quantity controls */
-    const input = document.getElementById('q-val');
-    const clamp = (v) => Math.max(1, Math.min(parseInt(v, 10) || 1, maxQty(p)));
-    // NOTE: input.value is a string - parse before arithmetic, otherwise
-    // "1" + 1 === "11" and the stepper jumps to the maximum.
-    document.getElementById('q-inc').addEventListener('click', () => { input.value = clamp(Number(input.value) + 1); });
-    document.getElementById('q-dec').addEventListener('click', () => { input.value = clamp(Number(input.value) - 1); });
-    input.addEventListener('change', () => { input.value = clamp(input.value); });
-
-    document.getElementById('add-btn').addEventListener('click', () => {
-      const qty = clamp(input.value);
-      cart.add(p, qty);
-      toast(`Added ${qty} × “${p.name}” to your cart.`, 'success');
-    });
 
     /* related products from the same category */
-    const rel = await apiFetch(`/products?category=${encodeURIComponent(p.category)}&per_page=5&sort=newest`);
-    const others = (rel.data || []).filter((x) => x.id !== p.id).slice(0, 4);
-    if (others.length) {
-      relatedHost.innerHTML = `<div class="product-grid">${others.map(productCardHtml).join('')}</div>`;
-      bindAddButtons(relatedHost, new Map(others.map((x) => [x.id, x])));
-    } else {
-      relatedHost.innerHTML = '<p class="muted">No related products.</p>';
-    }
+    let related = [];
+    try {
+      const rel = await apiFetch(`/products?category=${encodeURIComponent(p.category)}&per_page=5&sort=newest`);
+      related = rel.data || [];
+    } catch { /* related is optional */ }
+
+    paint(p, related);
   } catch (err) {
+    /* Fallback: last cached catalogue, then the bundled snapshot. */
+    const cached = readCatalogue();
+    const snap = cached ? null : await loadSnapshot();
+    const items = cached ? cached.items : (snap ? snap.items : null);
+    const notice = cached ? staleNotice(cached.at) : (snap ? snapshotNotice(snap.at) : null);
+    const p = items ? items.find((x) => x.id === id) : null;
+
+    if (p) {
+      paint(p, items);
+      alertHost.innerHTML = alertHtml(notice, 'warn');
+      return;
+    }
     host.innerHTML = '';
     alertHost.innerHTML = alertHtml(err.message, 'error');
     relatedHost.innerHTML = '';
